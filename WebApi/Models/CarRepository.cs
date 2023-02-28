@@ -7,22 +7,43 @@ using WebApi.Data;
 
 namespace WebApi.Models
 {
-    public class CarRepository: ICarRepository
+    public class CarRepository : ICarRepository
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly AppDbContext _db;
         public CarRepository(AppDbContext appDbContext)
         {
-            _appDbContext = appDbContext;
+            _db = appDbContext;
         }
-
-        public IEnumerable<Car> GetAll()
+        public async Task<IEnumerable<Car>> GetAll()
         {
-            return _appDbContext.Cars;
+            return await _db.Cars.ToListAsync();
         }
-        public Car Get(int id)
+        public async Task<Car> Get(int id)
         {
-            return _appDbContext.Cars.FirstOrDefault(c => c.Id == id);
+            return await _db.Cars.FindAsync(id);
         }
-
+        public async Task<Car> Add(Car car)
+        {
+            var result = _db.Add(car);
+            await _db.SaveChangesAsync();
+            return result.Entity;
+        }
+        public async Task<Car> Put(int id, Car car)
+        {
+            _db.Entry(car).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+            return car;
+        }
+        public async Task<Car> Delete(int id)
+        {
+            var car = _db.Cars.FindAsync(id);
+            _db.Cars.Remove(await car);
+            await _db.SaveChangesAsync();
+            return await car;
+        }
+        //private bool CarExists(int id)
+        //{
+        //    return _db.Cars.Any(e => e.Id == id);
+        //}
     }
 }

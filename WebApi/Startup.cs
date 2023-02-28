@@ -36,11 +36,10 @@ namespace WebApi
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ICarRepository, CarRepository>();
-
             // Was commented
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarsWebApi", Version = "v1" });
             });
         }
 

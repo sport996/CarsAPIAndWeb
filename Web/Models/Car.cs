@@ -16,7 +16,6 @@ namespace Web.Models
         public string Model { get; set; }
         [Required(ErrorMessage = "Please enter the Year.")]
         public int Year { get; set; }
-        public Byte[] Img { get; set; }
         [Required(ErrorMessage = "Please enter a description.")]
         public string Description { get; set; }
         public bool IsRented { get; set; }
